@@ -14,3 +14,31 @@ SELECT *
 FROM top_gold_winter
 WHERE goldz >= 5
 LIMIT 5;
+
+-- Write a CTE called tall_athletes to find athletes taller than the average height for athletes in the database.
+-- Query the CTE to return only female athletes over age 30 who meet the criteria.
+WITH tall_athletes AS (
+	SELECT *
+	FROM athletes
+	WHERE height > (SELECT AVG(height) FROM athletes))
+SELECT name, height, age
+FROM tall_athletes
+WHERE gender IN ('F')
+	AND age >= 30;
+
+-- Write a CTE called tall_over30_female_athletes for the results of Exercise 2.
+-- Query the CTE to find the average weight of these athletes.
+WITH tall_over30_female_athletes AS (
+		WITH tall_athletes AS (
+		SELECT *
+		FROM athletes
+		WHERE height > (SELECT AVG(height) FROM athletes))
+	SELECT name, height, age, weight
+	FROM tall_athletes
+	WHERE gender IN ('F')
+		AND age >= 30
+	)
+SELECT AVG(weight)
+FROM tall_over30_female_athletes;
+
+
